@@ -1,0 +1,9 @@
+com\luma\pages\SignupPage.class
+com\luma\pages\LoginPage.class
+com\luma\pages\ProductPage.class
+com\luma\base\BasePage.class
+com\luma\testcases\LoginTest.class
+com\luma\factory\DriverBase.class
+com\luma\base\BaseTest.class
+com\luma\testcases\ProductTest.class
+com\luma\testcases\SignupTest.class
