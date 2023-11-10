@@ -38,4 +38,20 @@ public class ProductTest extends BaseTest {
 
         Thread.sleep(6000);
     }
+
+
+    @Test
+    public void shouldBeAbleToAddProductToTheCart() throws InterruptedException{
+        LoginPage loginPage = new LoginPage(getDriver());
+
+        Boolean isMessageDisplayed = loginPage
+                .load()
+                .login("test111@example.com","Test@1234?")
+                .chooseSection()
+                .isMessageDisabled();
+
+        Assert.assertTrue(isMessageDisplayed);
+
+        Thread.sleep(6000);
+    }
 }

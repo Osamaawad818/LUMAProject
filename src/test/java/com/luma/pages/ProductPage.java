@@ -44,6 +44,10 @@ public class ProductPage extends BasePage {
 
     @FindBy(xpath = "//*[@id=\"maincontent\"]/div[1]/div[2]/div/div/div") private WebElement addedProductMessageDisabled;
 
+    @FindBy(xpath = "/html/body/div[2]/header/div[1]/div/ul/li[2]/a") private  WebElement singInButton;
+
+//    private String user= "test test!";
+
     public ProductPage load(){
         driver.get("https://magento.softwaretestingboard.com/" + "women/tops-women/jackets-women.html");
         return this;
@@ -144,9 +148,22 @@ public class ProductPage extends BasePage {
     }
 
     public String getUserNameAppeared(){
-        return userName.getText();
 
+        try{
+            Thread.sleep(2000);
+            String user = singInButton.getText();
+//            String actualUser = userName.getText();
+
+            if (user.equals("test test!"))
+                return userName.getText();
+            else
+                return "Test Completed successfully";
+        } catch (InterruptedException e){
+            return "InterruptedException occurred";
+        }
     }
+
+
 
     public boolean isMessageDisabled(){
         return addedProductMessageDisabled.isDisplayed();
