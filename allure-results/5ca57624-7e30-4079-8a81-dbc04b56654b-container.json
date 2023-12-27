@@ -1,0 +1,1 @@
+{"uuid":"5ca57624-7e30-4079-8a81-dbc04b56654b","name":"com.luma.base.BaseTest.setup","children":["b6943139-1327-4668-ad87-8bcc083da684"],"description":"","befores":[{"name":"setup","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1700943310709,"stop":1700943351090}],"afters":[],"start":1700943310701,"stop":1700943351097}

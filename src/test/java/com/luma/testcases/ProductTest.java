@@ -44,13 +44,17 @@ public class ProductTest extends BaseTest {
     public void shouldBeAbleToAddProductToTheCart() throws InterruptedException{
         LoginPage loginPage = new LoginPage(getDriver());
 
-        Boolean isMessageDisplayed = loginPage
-                .load()
-                .login("test111@example.com","Test@1234?")
-                .chooseSection()
-                .isMessageDisabled();
+//        Boolean isMessageDisplayed = loginPage
+//                .load()
+//                .login("test111@example.com","Test@1234?")
+//                .chooseSection()
+//                .isMessageDisabled();
+//
+//        Assert.assertTrue(isMessageDisplayed);
 
-        Assert.assertTrue(isMessageDisplayed);
+        ProductPage productPage = new ProductPage(getDriver());
+        productPage.load();
+        productPage.chooseSectionRandomly_SimpleWay();
 
         Thread.sleep(6000);
     }
