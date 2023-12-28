@@ -40,7 +40,15 @@ public class ProductTest extends BaseTest {
     }
 
 
-    @Test
+    /** Code Workflow - add Product -:
+     Open the website. (Load function)
+     Randomly select an item from the navigation bar ("Woman," "Men," "Gear").
+
+     Hover over on the product then RANDOMLY choose the products, sizes, and colors
+     then finally add the selected products to the shopping cart.
+     This process is repeated 4 times on the website.*/
+
+    @Test (invocationCount = 4)
     public void shouldBeAbleToAddProductToTheCart() throws InterruptedException{
         LoginPage loginPage = new LoginPage(getDriver());
 
@@ -52,6 +60,7 @@ public class ProductTest extends BaseTest {
 //
 //        Assert.assertTrue(isMessageDisplayed);
 
+        Thread.sleep(3000);
         ProductPage productPage = new ProductPage(getDriver());
         productPage.load();
         productPage.chooseSectionRandomly_SimpleWay();

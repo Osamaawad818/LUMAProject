@@ -55,7 +55,6 @@ public class ProductPage extends BasePage {
     @FindBy(id = "top-cart-btn-checkout") private  WebElement checkOutTheCart;
 
     public ProductPage load(){
-//        driver.get("https://magento.softwaretestingboard.com/" + "women/tops-women/jackets-women.html");
         driver.get("https://magento.softwaretestingboard.com/");
 
         return this;
@@ -95,12 +94,7 @@ public class ProductPage extends BasePage {
 
 
     public void choosingRandomProductFromTheList() throws InterruptedException {
-//        Random random = new Random();
-//        Actions actions = new Actions(driver);
 
-//        System.out.println("Hello");
-
-//        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         Thread.sleep(2000);
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -412,15 +406,14 @@ public class ProductPage extends BasePage {
         Actions actions = new Actions(driver);
         Random random = new Random();
 
-        //Store the First List ID's in an array
+        //Store 3 ID's of the website options (Woman , Men , Gear) in a list to choose a random option
         WebElement[] productList = {
                 driver.findElement(By.id("ui-id-4")),
                 driver.findElement(By.id("ui-id-5")),
                 driver.findElement(By.id("ui-id-6"))
         };
 
-
-        //Generate a random index to choose an option between First 6 Options
+        //Generate a random index to choose an random option from productList
         int randomIndex = random.nextInt(productList.length);
         WebElement selectOption = productList[randomIndex];
         System.out.println(selectOption.getText());
@@ -429,8 +422,11 @@ public class ProductPage extends BasePage {
         selectOption.click();
         Thread.sleep(3000);
 
+        //Here I'm checking if selected option is Gear || Men || Woman
         if(selectedOption.equals("Gear")){
+            //I used try & catch to handling errors if the condition is not met OR the driver didn't find the element
             try {
+
                 driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
                 //Store every tag have a className(item) to choose a randomlly Option from this List
@@ -443,27 +439,20 @@ public class ProductPage extends BasePage {
                 selectedProductFromGear.click();
 
                 try {
-//                    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+                    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
                     WebElement container =  driver.findElement(By.className("product-items"));
                     List<WebElement> myItem = container.findElements(By.tagName("li"));
-
-//                    for(WebElement item : myItem)
-//                        System.out.println(item.getText());
-
-//                    int randomItem = random.nextInt(myItem.size());
-//                    WebElement selectedItem = gearOption.get(randomItem);
-//                    System.out.println(selectedItem.getText());
-//                    selectedItem.click();
 
                     int randomItem = random.nextInt(myItem.size());
                     WebElement addedItem = myItem.get(randomItem);
                     actions.moveToElement(addedItem).perform();
 
+                    Thread.sleep(5000);
                     WebElement addToCart = container.findElement(By.className("tocart"));
 
-                    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
+//                    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+                    Thread.sleep(3000);
                     addToCart.click();
 
 
@@ -473,44 +462,21 @@ public class ProductPage extends BasePage {
             } catch (NoSuchElementException e){
                 System.out.println("Element Not Found" + e.getMessage());
             }
+
+            //After I finished and chose the product I clicked on the show card button and check if I added it correctly
+            Thread.sleep(5000);
+            showCart.click();
+            Thread.sleep(3000);
+            checkOutTheCart.click();
             /** -------------------------------------------------------------------------------------------*/
-//            Thread.sleep(15000);
-//            //Scroll down in the page to choose any Item you need
-//            JavascriptExecutor js = (JavascriptExecutor) driver;
-//            js.executeScript("window.scrollBy(0, 350);");
-//            Thread.sleep(3000);
-
-
-            //Next I saved a WebElement(div tag) Have some Li tags and saved it in ist of webElements
-//            WebElement selectedItem = driver.findElement(By.className("wrapper"));
-//            List <WebElement> listOfSelectedProduct = selectedItem.findElements(By.className("product-item-link"));
-//            for(WebElement i : listOfSelectedProduct)
-//                System.out.println(i.getText());
-//
-//            int randomItem = random.nextInt(listOfSelectedProduct.size());
-//
-//            WebElement itemSelected = listOfSelectedProduct.get(randomItem);
-//            System.out.println(itemSelected.getText());
-
-
-
-//            itemSelected.click();
-
         } else {
 
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
             try {
-                //Scroll down in the page to choose any Item you need
-//                JavascriptExecutor js = (JavascriptExecutor) driver;
-//                js.executeScript("window.scrollBy(0, 500);");
-//                Thread.sleep(3000);
-
                 WebElement option = driver.findElement(By.className("categories-menu"));
                 List<WebElement> menOrWomanOption = option.findElements(By.tagName("a"));
 
-//                for(WebElement item : menOrWomanOption)
-//                    System.out.println(item.getText());
 
                 int randomIndexFormMenOrWoman = random.nextInt((menOrWomanOption.size()));
                 System.out.println(randomIndexFormMenOrWoman);
@@ -523,8 +489,6 @@ public class ProductPage extends BasePage {
                     WebElement container = driver.findElement(By.className("products-grid"));
                     List <WebElement> item = container.findElements(By.className("product-item"));
                     int randomItem = random.nextInt(item.size());
-
-//                    WebElement itemImage = driver.findElement(By.className("product-image-photo"));
 
                     WebElement addedItem = item.get(randomItem);
 
@@ -555,25 +519,10 @@ public class ProductPage extends BasePage {
             }
         }
 
+        Thread.sleep(5000);
         showCart.click();
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         checkOutTheCart.click();
-    }
-
-    public void addProductToCart() throws InterruptedException{
-        Random random = new Random();
-
-        Thread.sleep(4000);
-
-
-
-//        List<WebElement> ProductSize = driver.findElements(By.xpath("//*[@id=\"maincontent\"]/div[3]/div[1]/div[3]/ol/li[1]/div/div/div[2]/div[1]/div"));
-//        for(WebElement chooseProductSize : ProductSize)
-//            System.out.println("/n" + chooseProductSize.getText() + ",,," + "--------------------------------");
-////
-//        List<WebElement> ProductColor = driver.findElements(By.className("swatch-option color"));
-//        for(WebElement chooseProductColor : ProductColor)
-//            System.out.println(chooseProductColor.getText() + ",,,");
     }
 
     public void deleteProductFromCart() throws InterruptedException {
