@@ -32,7 +32,7 @@ public class LoginPage extends BasePage {
     }
 
     public ProductPage login(String email , String password) throws InterruptedException {
-        Thread.sleep(15000);
+        Thread.sleep(10000);
         login.click();
         Thread.sleep(8000);
         emailText.sendKeys(email);

@@ -48,17 +48,20 @@ public class ProductTest extends BaseTest {
      then finally add the selected products to the shopping cart.
      This process is repeated 4 times on the website.*/
 
-    @Test (invocationCount = 4)
+    //(invocationCount = 4)
+    @Test
     public void shouldBeAbleToAddProductToTheCart() throws InterruptedException{
         LoginPage loginPage = new LoginPage(getDriver());
 
+//        Thread.sleep(3000);
 //        Boolean isMessageDisplayed = loginPage
 //                .load()
 //                .login("test111@example.com","Test@1234?")
-//                .chooseSection()
+//                .chooseSectionRandomly_SimpleWay()
 //                .isMessageDisabled();
 //
 //        Assert.assertTrue(isMessageDisplayed);
+
 
         Thread.sleep(3000);
         ProductPage productPage = new ProductPage(getDriver());

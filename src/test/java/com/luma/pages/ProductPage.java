@@ -46,13 +46,15 @@ public class ProductPage extends BasePage {
 
     @FindBy(className = "logged-in") private WebElement userName ;
 
-    @FindBy(xpath = "//*[@id=\"maincontent\"]/div[1]/div[2]/div/div/div") private WebElement addedProductMessageDisabled;
+    @FindBy(className = "step-title") private WebElement addedProductMessageDisabled;
 
     @FindBy(xpath = "/html/body/div[2]/header/div[1]/div/ul/li[2]/a") private  WebElement singInButton;
 
     @FindBy(className = "showcart") private  WebElement showCart;
 
     @FindBy(id = "top-cart-btn-checkout") private  WebElement checkOutTheCart;
+
+    @FindBy(xpath ="//*[@id=\"maincontent\"]/div[1]/div[2]/div/div/div") private  WebElement attentionMessage;
 
     public ProductPage load(){
         driver.get("https://magento.softwaretestingboard.com/");
@@ -402,7 +404,7 @@ public class ProductPage extends BasePage {
         }
     }
 
-    public void chooseSectionRandomly_SimpleWay() throws InterruptedException{
+    public ProductPage chooseSectionRandomly_SimpleWay() throws InterruptedException{
         Actions actions = new Actions(driver);
         Random random = new Random();
 
@@ -446,15 +448,18 @@ public class ProductPage extends BasePage {
 
                     int randomItem = random.nextInt(myItem.size());
                     WebElement addedItem = myItem.get(randomItem);
-                    actions.moveToElement(addedItem).perform();
 
                     Thread.sleep(5000);
+                    actions.moveToElement(addedItem).perform();
+
+                    Thread.sleep(3000);
                     WebElement addToCart = container.findElement(By.className("tocart"));
 
 //                    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
                     Thread.sleep(3000);
                     addToCart.click();
 
+                    Thread.sleep(5000);
 
                 } catch (NoSuchElementException e){
                     System.out.println("Element Not Found" + e.getMessage());
@@ -464,10 +469,16 @@ public class ProductPage extends BasePage {
             }
 
             //After I finished and chose the product I clicked on the show card button and check if I added it correctly
-            Thread.sleep(5000);
-            showCart.click();
-            Thread.sleep(3000);
-            checkOutTheCart.click();
+//            if(attentionMessage.isDisplayed()){
+//                System.out.println("The requested qty is not available");
+//                System.out.println("The Message is : " + attentionMessage.getText());
+//            } else {
+//                driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+//                Thread.sleep(5000);
+//                showCart.click();
+//                Thread.sleep(3000);
+//                checkOutTheCart.click();
+//            }
             /** -------------------------------------------------------------------------------------------*/
         } else {
 
@@ -517,12 +528,27 @@ public class ProductPage extends BasePage {
             } catch (NoSuchElementException e){
                 System.out.println("Element Not Found" + e.getMessage());
             }
+            //After I finished and chose the product I clicked on the show card button and check if I added it correctly
+//            if(attentionMessage.isDisplayed()){
+//                System.out.println("The requested qty is not available");
+//                System.out.println("The Message is : " + attentionMessage.getText());
+//            } else {
+//                driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+//                Thread.sleep(5000);
+//                showCart.click();
+//                Thread.sleep(3000);
+//                checkOutTheCart.click();
+//            }
+//            Thread.sleep(5000);
+//            showCart.click();
+//            Thread.sleep(5000);
+//            checkOutTheCart.click();
         }
 
-        Thread.sleep(5000);
-        showCart.click();
-        Thread.sleep(3000);
-        checkOutTheCart.click();
+
+
+
+        return this;
     }
 
     public void deleteProductFromCart() throws InterruptedException {
