@@ -2,16 +2,19 @@ package com.luma.pages;
 
 import com.luma.base.BasePage;
 import com.luma.base.BaseUrl;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
@@ -56,6 +59,8 @@ public class ProductPage extends BasePage {
 
     @FindBy(xpath ="//*[@id=\"maincontent\"]/div[1]/div[2]/div/div/div") private  WebElement attentionMessage;
 
+    @FindBy(className ="title") private  WebElement orderSummary;
+
     public ProductPage load(){
         driver.get("https://magento.softwaretestingboard.com/");
 
@@ -93,7 +98,6 @@ public class ProductPage extends BasePage {
         Thread.sleep(6000);
         return this;
     }
-
 
     public void choosingRandomProductFromTheList() throws InterruptedException {
 
@@ -407,6 +411,7 @@ public class ProductPage extends BasePage {
     public ProductPage chooseSectionRandomly_SimpleWay() throws InterruptedException{
         Actions actions = new Actions(driver);
         Random random = new Random();
+        By attentionMessage2 = By.xpath("\"//*[@id=\\\"maincontent\\\"]/div[1]/div[2]/div/div/div");
 
         //Store 3 ID's of the website options (Woman , Men , Gear) in a list to choose a random option
         WebElement[] productList = {
@@ -441,7 +446,7 @@ public class ProductPage extends BasePage {
                 selectedProductFromGear.click();
 
                 try {
-                    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+                    driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
                     WebElement container =  driver.findElement(By.className("product-items"));
                     List<WebElement> myItem = container.findElements(By.tagName("li"));
@@ -456,8 +461,31 @@ public class ProductPage extends BasePage {
                     WebElement addToCart = container.findElement(By.className("tocart"));
 
 //                    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-                    Thread.sleep(3000);
+                    Thread.sleep(5000);
                     addToCart.click();
+
+                    Thread.sleep(6000);
+                    //After I finished and chose the product I clicked on the show card button and check if I added it correctly
+                    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+                    if(isElementDisplayed(wait , attentionMessage2)){
+                        System.out.println("The requested qty is not available");
+                        System.out.println("The Message is : " + attentionMessage.getText());
+                    } else {
+                        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+                        Thread.sleep(5000);
+                        showCart.click();
+                        Thread.sleep(3000);
+                        checkOutTheCart.click();
+                    }
+
+                    Thread.sleep(5000);
+
+                    try {
+                        orderSummary.isDisplayed();
+                        takeAScreenShots(driver , "ScreenShots.png");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     Thread.sleep(5000);
 
@@ -468,17 +496,7 @@ public class ProductPage extends BasePage {
                 System.out.println("Element Not Found" + e.getMessage());
             }
 
-            //After I finished and chose the product I clicked on the show card button and check if I added it correctly
-//            if(attentionMessage.isDisplayed()){
-//                System.out.println("The requested qty is not available");
-//                System.out.println("The Message is : " + attentionMessage.getText());
-//            } else {
-//                driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-//                Thread.sleep(5000);
-//                showCart.click();
-//                Thread.sleep(3000);
-//                checkOutTheCart.click();
-//            }
+
             /** -------------------------------------------------------------------------------------------*/
         } else {
 
@@ -520,35 +538,78 @@ public class ProductPage extends BasePage {
                     //Click on AddToCart button
                     WebElement addToCart = container.findElement(By.className("tocart"));
                     addToCart.click();
+                    System.out.println("Product Added successfully");
+
+                    Thread.sleep(5000);
+
+                    //After I finished and chose the product I clicked on the show card button and check if I added it correctly
+                    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+                    if(isElementDisplayed(wait , attentionMessage2)){
+                        System.out.println("The requested qty is not available");
+                        System.out.println("The Message is : " + attentionMessage.getText());
+                    } else {
+                        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+                        Thread.sleep(5000);
+                        showCart.click();
+                        Thread.sleep(3000);
+                        checkOutTheCart.click();
+                    }
+
+                    Thread.sleep(3000);
+
+                    try {
+                        orderSummary.isDisplayed();
+                        takeAScreenShots(driver , "ScreenShots.png");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Thread.sleep(5000);
 
                 } catch (NoSuchElementException e){
                     System.out.println("Element Not Found" + e.getMessage());
-                }
 
+                }
             } catch (NoSuchElementException e){
                 System.out.println("Element Not Found" + e.getMessage());
             }
-            //After I finished and chose the product I clicked on the show card button and check if I added it correctly
-//            if(attentionMessage.isDisplayed()){
-//                System.out.println("The requested qty is not available");
-//                System.out.println("The Message is : " + attentionMessage.getText());
-//            } else {
-//                driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-//                Thread.sleep(5000);
-//                showCart.click();
-//                Thread.sleep(3000);
-//                checkOutTheCart.click();
-//            }
-//            Thread.sleep(5000);
-//            showCart.click();
-//            Thread.sleep(5000);
-//            checkOutTheCart.click();
         }
 
-
-
-
         return this;
+    }
+
+    public static boolean isElementDisplayed(WebDriverWait wait ,By locator){
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    public void takeAScreenShots(WebDriver driver , String fileName) throws IOException {
+        //Convert the Web driver instance to TakesScreenShots
+        //The TakesScreenshot interface is used to cast the WebDriver instance to capture a screenshot.
+        TakesScreenshot ts = (TakesScreenshot) driver;
+        File screenShotsFile = ts.getScreenshotAs(OutputType.FILE);
+        File destination = new File("C:\\Users\\Osama Awad\\Desktop\\SeleniumScreenShots\\" + fileName);
+        FileUtils.copyFile(screenShotsFile , destination);
+
+        /** Capture the screenshots as a file
+        The- getScreenshotAs method is used to capture the screenshot as a file.*/
+//        File screenShotsFile = ts.getScreenshotAs(OutputType.FILE);
+
+        /** Define the destination path for a screenShots (Where I will save the screen Shots) */
+//        String destinationPath = "C:\\Users\\Osama Awad\\Desktop\\" + fileName;
+
+        /** Move the screenShots file to the destination path
+        The Apache Commons IO library is used to copy the screenshot file to a specified destination path. */
+//        org.apache.commons.io.FileUtils.copyFile(screenShotsFile , new File(destinationPath));
+
+//        Files.copy(screenShotsFile.toPath(), new File(destinationPath).toPath());
+
+
+
     }
 
     public void deleteProductFromCart() throws InterruptedException {

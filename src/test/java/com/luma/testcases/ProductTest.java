@@ -63,7 +63,7 @@ public class ProductTest extends BaseTest {
 //        Assert.assertTrue(isMessageDisplayed);
 
 
-        Thread.sleep(3000);
+
         ProductPage productPage = new ProductPage(getDriver());
         productPage.load();
         productPage.chooseSectionRandomly_SimpleWay();
